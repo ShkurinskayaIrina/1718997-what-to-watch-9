@@ -1,0 +1,19 @@
+{
+  "name": "1718997-what-to-watch-9",
+  "version": "1.0.0",
+  "description": "* Студент: [Ирина Шкуринская](https://up.htmlacademy.ru/react/9/user/1718997). * Наставник: `Rail Sakhaviev`.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShkurinskayaIrina/1718997-what-to-watch-9.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShkurinskayaIrina/1718997-what-to-watch-9/issues"
+  },
+  "homepage": "https://github.com/ShkurinskayaIrina/1718997-what-to-watch-9#readme"
+}
