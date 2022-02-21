@@ -1,23 +1,10 @@
 import MainPage from '../main-page/main-page';
-
-type FilmDescription = {
-  name: string,
-  genre: string,
-  src: string,
-  yearRelease: number,
-}
-
-type FilmType = {
-  id: number,
-  poster: string,
-  name: string,
-}
-
+import {PromoFilm, Film} from '../../types/films';
 
 type AppProps = {
-  promoFilm: FilmDescription,
+  promoFilm: PromoFilm,
   genresFilm: string[],
-  catalogFilms: FilmType[],
+  catalogFilms: Film[],
 };
 
 function App({promoFilm, genresFilm, catalogFilms}: AppProps): JSX.Element {
