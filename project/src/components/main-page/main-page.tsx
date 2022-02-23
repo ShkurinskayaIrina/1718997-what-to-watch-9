@@ -1,5 +1,6 @@
 import SmallFilmCard from '../small-film-card/small-film-card';
-import GenresList from '../genres-list/genres-film';
+import GenresList from '../genres-list/genres-list';
+import Logo from '../logo/logo';
 
 import { PromoFilm, Film } from '../../types/films';
 
@@ -20,13 +21,7 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
-          <div className="logo">
-            <a className="logo__link" href="/">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <Logo />
 
           <ul className="user-block">
             <li className="user-block__item">
@@ -89,6 +84,14 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
           </div>
         </section>
       </div>
+
+      <footer className="page-footer">
+        {/* доп класс className='logo__link--light' */}
+        <Logo />
+        <div className="copyright">
+          <p>© 2019 What to watch Ltd.</p>
+        </div>
+      </footer>
     </>
   );
 }
