@@ -5,7 +5,7 @@ export const promiFilmDescription = {
   yearRelease: 2014,
 };
 
-export const genresFilm = [
+export const genres = [
   'All genres',
   'Comedies',
   'Crime',
@@ -17,7 +17,7 @@ export const genresFilm = [
   'Sci-Fi',
   'Thrillers'];
 
-export const catalogFilms = [
+export const catalog = [
   {
     id:0,
     poster: 'img/fantastic-beasts-the-crimes-of-grindelwald.jpg',
