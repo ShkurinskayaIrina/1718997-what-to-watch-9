@@ -1,11 +1,12 @@
-import SmallFilmCard from '../small-film-card/small-film-card';
-import GenresList from '../genres-list/genres-list';
-import Logo from '../logo/logo';
+import { Link } from 'react-router-dom';
 
-import { PromoFilm, Film } from '../../types/films';
+import SmallFilmCard from '../components/small-film-card/small-film-card';
+import GenresList from '../components/genres-list/genres-list';
+import Logo from '../components/logo/logo';
+import { Film } from '../types/films';
 
 type MainProps = {
-  promoFilm: PromoFilm,
+  promoFilm: Film;
   genresFilm: string[],
   catalogFilms: Film[],
 };
@@ -15,7 +16,7 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={promoFilm.backgroundImage} alt={promoFilm.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -30,7 +31,7 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
               </div>
             </li>
             <li className="user-block__item">
-              <a className="user-block__link"  href="/">Sign out</a>
+              <Link to="/login" className="user-block__link">Sign out</Link>
             </li>
           </ul>
         </header>
@@ -38,14 +39,14 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src={promoFilm.src} alt={promoFilm.name} width="218" height="327" />
+              <img src={promoFilm.posterImage} alt={`${promoFilm.name} poster`}  width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
               <h2 className="film-card__title">{promoFilm.name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{promoFilm.genre}</span>
-                <span className="film-card__year">{promoFilm.yearRelease}</span>
+                <span className="film-card__year">{promoFilm.released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -76,7 +77,7 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
           </ul>
 
           <div className="catalog__films-list">
-            { catalogFilms.map((film) => <SmallFilmCard name={film.name} poster={film.poster} key={film.id}/>) }
+            <SmallFilmCard catalogFilms={catalogFilms} />
           </div>
 
           <div className="catalog__more">

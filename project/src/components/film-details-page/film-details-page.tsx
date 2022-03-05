@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Logo from '../logo/logo';
 
 function FilmDetailsPage (): JSX.Element {
@@ -21,7 +22,7 @@ function FilmDetailsPage (): JSX.Element {
                 </div>
               </li>
               <li className="user-block__item">
-                <a className="user-block__link" href="/">Sign out</a>
+                <Link to="/login" className="user-block__link">Sign out</Link>
               </li>
             </ul>
           </header>
@@ -47,7 +48,7 @@ function FilmDetailsPage (): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </button>
-                <a href="add-review.html" className="btn film-card__button">Add review</a>
+                <Link to="/films/:id/review" className="btn film-card__button">Add review</Link>
               </div>
             </div>
           </div>
@@ -63,13 +64,13 @@ function FilmDetailsPage (): JSX.Element {
               <nav className="film-nav film-card__nav">
                 <ul className="film-nav__list">
                   <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Overview</a>
+                    <Link to="/films/:id" className="film-nav__link">Overview</Link>
                   </li>
                   <li className="film-nav__item film-nav__item--active">
-                    <a href="/" className="film-nav__link">Details</a>
+                    <Link to="/films/:id/details" className="film-nav__link">Details</Link>
                   </li>
                   <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Reviews</a>
+                    <Link to="/films/:id/reviews" className="film-nav__link">Reviews</Link>
                   </li>
                 </ul>
               </nav>
@@ -129,7 +130,7 @@ function FilmDetailsPage (): JSX.Element {
                 <img src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Fantastic Beasts: The Crimes of Grindelwald</a>
+                <Link to="/films/:id" className="small-film-card__link">Fantastic Beasts: The Crimes of Grindelwald</Link>
               </h3>
             </article>
 
@@ -138,7 +139,7 @@ function FilmDetailsPage (): JSX.Element {
                 <img src="img/bohemian-rhapsody.jpg" alt="Bohemian Rhapsody" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Bohemian Rhapsody</a>
+                <Link to="/films/:id" className="small-film-card__link">Bohemian Rhapsody</Link>
               </h3>
             </article>
 
@@ -147,7 +148,7 @@ function FilmDetailsPage (): JSX.Element {
                 <img src="img/macbeth.jpg" alt="Macbeth" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Macbeth</a>
+                <Link to="/films/:id" className="small-film-card__link">Macbeth</Link>
               </h3>
             </article>
 
@@ -156,7 +157,7 @@ function FilmDetailsPage (): JSX.Element {
                 <img src="img/aviator.jpg" alt="Aviator" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Aviator</a>
+                <Link to="/films/:id" className="small-film-card__link">Aviator</Link>
               </h3>
             </article>
           </div>

@@ -1,18 +1,32 @@
-type FilmType = {
-  poster: string,
-  name: string,
-}
+import { useState } from 'react';
 
-function SmallFilmCard({name, poster}: FilmType): JSX.Element {
+import FilmCard from '../film-card/film-card';
+
+import { Film } from '../../types/films';
+
+type Props = {
+  catalogFilms: Film[];
+};
+
+function SmallFilmCard({catalogFilms}: Props): JSX.Element {
+  const [cardActiveFilm, setcardActiveFilm] = useState<Film | null>(null);
+
+  const handlerFilmChange = (filmInfo:Film) => {
+    setcardActiveFilm(filmInfo);
+  };
+
+  const handlerFilmChangeOut = () => {
+    setcardActiveFilm(cardActiveFilm);
+  };
+
   return (
-    <article className="small-film-card catalog__films-card">
-      <div className="small-film-card__image">
-        <img src={poster} alt={name} width="280" height="175" />
-      </div>
-      <h3 className="small-film-card__title">
-        <a className="small-film-card__link" href="film-page.html">{name}</a>
-      </h3>
-    </article>
+    <>
+      {catalogFilms.map((film) => (
+        <FilmCard key={film.id} catalogFilm={film}
+          onMouseEnterCallback={handlerFilmChange}
+          onMouseEnterCallbackOut={handlerFilmChangeOut}
+        />))}
+    </>
   );
 }
 
