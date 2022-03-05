@@ -1,23 +1,24 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 
-import {PromoFilm, Film} from '../../types/films';
+import { Film } from '../../types/films';
 
-import MainPage from '../main-page/main-page';
-import AddReviewPage from '../add-review-page/add-review-page';
+import MainPage from '../../pages/main-page';
+import AddReviewPage from '../../pages/add-review-page';
+import FilmPage from '../../pages/film-page';
+import MyListPage from '../../pages/my-list-page';
+import PlayerPage from '../../pages/player-page';
+import SignInPage from '../../pages/sign-in-page';
+
 import FilmDetailsPage from '../film-details-page/film-details-page';
-import FilmPage from '../film-page/film-page';
-import FilmPageReviews from '../film-page-reviews/film-page-reviews';
-import MyListPage from '../my-list-page/my-list-page';
-import PlayerPage from '../player-page/player-page';
-import SignInPage from '../sign-in-page/sign-in-page';
+import FilmReviewsPage from '../film-reviews-page/film-reviews-page';
 import NotFoundPage from '../not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 
 type AppProps = {
-  promoFilm: PromoFilm,
-  genresFilm: string[],
-  catalogFilms: Film[],
+  promoFilm: Film;
+  genresFilm: string[];
+  catalogFilms: Film[];
 };
 
 function App({promoFilm, genresFilm, catalogFilms}: AppProps): JSX.Element {
@@ -25,42 +26,42 @@ function App({promoFilm, genresFilm, catalogFilms}: AppProps): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route
-          path={AppRoute.Root}
+          path={AppRoute.MainPage }
           element={<MainPage promoFilm={promoFilm} genresFilm={genresFilm} catalogFilms={catalogFilms} />}
         />
         <Route
-          path={AppRoute.Login}
+          path={AppRoute.SignInPage}
           element={<SignInPage />}
         />
         <Route
-          path={AppRoute.MyList}
+          path={AppRoute.MyListPage}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
+              authorizationStatus={AuthorizationStatus.Auth}
             >
-              <MyListPage />
+              <MyListPage catalogFilms={catalogFilms}/>
             </PrivateRoute>
           }
         />
         <Route
-          path={AppRoute.Film}
-          element={<FilmPage />}
+          path={AppRoute.FilmPage}
+          element={<FilmPage film={promoFilm}/>}
         />
         <Route
-          path={AppRoute.FilmDetails}
+          path={AppRoute.FilmDetailsPage}
           element={<FilmDetailsPage />}
         />
         <Route
-          path={AppRoute.FilmPageReviews}
-          element={<FilmPageReviews />}
+          path={AppRoute.FilmReviewsPage}
+          element={<FilmReviewsPage />}
         />
         <Route
-          path={AppRoute.Review}
-          element={<AddReviewPage />}
+          path={AppRoute.AddReviewPage}
+          element={<AddReviewPage film={promoFilm}/>}
         />
         <Route
-          path={AppRoute.Player}
-          element={<PlayerPage />}
+          path={AppRoute.PlayerPage}
+          element={<PlayerPage film={promoFilm}/>}
         />
         <Route
           path="*"

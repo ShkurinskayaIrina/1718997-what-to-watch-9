@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
 import Logo from '../logo/logo';
 
-function FilmPageReviews(): JSX.Element {
+function FilmReviewsPage(): JSX.Element {
   return (
     <>
       <section className="film-card film-card--full">
@@ -47,7 +48,7 @@ function FilmPageReviews(): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </button>
-                <a href="add-review.html" className="btn film-card__button">Add review</a>
+                <Link to="/films/:id/review" className="btn film-card__button">Add review</Link>
               </div>
             </div>
           </div>
@@ -63,13 +64,13 @@ function FilmPageReviews(): JSX.Element {
               <nav className="film-nav film-card__nav">
                 <ul className="film-nav__list">
                   <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Overview</a>
+                    <Link to="/films/:id" className="film-nav__link">Overview</Link>
                   </li>
                   <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Details</a>
+                    <Link to="/films/:id/details" className="film-nav__link">Details</Link>
                   </li>
                   <li className="film-nav__item film-nav__item--active">
-                    <a href="/" className="film-nav__link">Reviews</a>
+                    <Link to="/films/:id/reviews" className="film-nav__link">Reviews</Link>
                   </li>
                 </ul>
               </nav>
@@ -217,4 +218,4 @@ function FilmPageReviews(): JSX.Element {
   );
 }
 
-export default FilmPageReviews;
+export default FilmReviewsPage;
