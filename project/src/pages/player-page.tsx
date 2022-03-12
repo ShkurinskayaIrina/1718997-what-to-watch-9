@@ -1,10 +1,6 @@
-import { Film } from '../types/films';
+import { FilmProps } from '../types/films';
 
-type Props = {
-  film: Film;
-}
-
-function PlayerPage({film}:Props): JSX.Element {
+function PlayerPage({film}:FilmProps): JSX.Element {
   return (
     <div className="player">
       <video src={film.videoLink} className="player__video" poster={film.posterImage}></video>

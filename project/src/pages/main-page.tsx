@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 
-import SmallFilmCard from '../components/small-film-card/small-film-card';
+import FilmList from '../components/film-list/film-list';
 import GenresList from '../components/genres-list/genres-list';
+import Footer from '../components/footer/footer';
 import Logo from '../components/logo/logo';
 import { Film } from '../types/films';
 
 type MainProps = {
-  promoFilm: Film;
+  promoFilm: Film,
   genresFilm: string[],
   catalogFilms: Film[],
 };
@@ -22,7 +23,7 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
-          <Logo />
+          <Logo classLogo="logo__link"/>
 
           <ul className="user-block">
             <li className="user-block__item">
@@ -77,7 +78,7 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
           </ul>
 
           <div className="catalog__films-list">
-            <SmallFilmCard catalogFilms={catalogFilms} />
+            <FilmList catalogFilms={catalogFilms} />
           </div>
 
           <div className="catalog__more">
@@ -86,13 +87,7 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
         </section>
       </div>
 
-      <footer className="page-footer">
-        {/* доп класс className='logo__link--light' */}
-        <Logo />
-        <div className="copyright">
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }

@@ -1,10 +1,11 @@
 import Logo from '../components/logo/logo';
+import  Footer from '../components/footer/footer';
 
 function SignInPage(): JSX.Element {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
-        <Logo />
+        <Logo classLogo="logo__link" />
 
         <h1 className="page-title user-page__title">Sign in</h1>
       </header>
@@ -27,14 +28,7 @@ function SignInPage(): JSX.Element {
         </form>
       </div>
 
-      <footer className="page-footer">
-        {/* claccName='logo__link--light' */}
-        <Logo />
-
-        <div className="copyright">
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

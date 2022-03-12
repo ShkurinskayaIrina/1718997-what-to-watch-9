@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Logo from '../components/logo/logo';
-import SmallFilmCard from '../components/small-film-card/small-film-card';
+import Footer from '../components/footer/footer';
+import FilmList from '../components/film-list/film-list';
 import { Film } from '../types/films';
 
 type Props = {
@@ -11,7 +12,7 @@ function MyListPage({catalogFilms}:Props): JSX.Element {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
-        <Logo />
+        <Logo classLogo="logo__link" />
 
         <h1 className="page-title user-page__title">My list</h1>
 
@@ -31,18 +32,11 @@ function MyListPage({catalogFilms}:Props): JSX.Element {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          <SmallFilmCard catalogFilms={catalogFilms}/>
+          <FilmList catalogFilms={catalogFilms}/>
         </div>
       </section>
 
-      <footer className="page-footer">
-        {/* claccName='logo__link--light' */}
-        <Logo />
-
-        <div className="copyright">
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
