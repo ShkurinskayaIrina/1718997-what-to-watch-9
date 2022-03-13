@@ -18,11 +18,16 @@ export type Film = {
   isFavorite: boolean;
 }
 
+export type FilmProps = {
+  film: Film;
+}
+
 export type Genre = {
   name: string;
 }
 
 export type Comment = {
+  filmId: number;
   id: number;
   comment: string;
   date: string;
@@ -32,3 +37,13 @@ export type Comment = {
     name: string;
   }
 }
+
+type Rating = {
+  from: number,
+  to: number,
+}
+
+export type RatingRangeProps = {
+  [key: string]: Rating,
+};
+

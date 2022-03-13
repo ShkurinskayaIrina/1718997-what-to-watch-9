@@ -1,66 +1,37 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Logo from '../components/logo/logo';
-import { Film } from '../types/films';
 
-type Props = {
-  film: Film;
-}
+import Footer from '../components/footer/footer';
+import NotFoundPage from '../components/not-found-page/not-found-page';
+import FilmTabs from '../components/film-tabs/film-tabs';
 
-// type Rating = {
-//   from: number,
-//   to: number,
-// }
+import { catalog, comments } from '../mocks/data';
 
-// type RatingRangeProps = {
-//   [key: string]: Rating,
-// };
+function FilmPage(): JSX.Element {
+  const {id: idParams} = useParams();
 
-// export const ratingRange:RatingRangeProps = {
-//   bad: {
-//     from: 0,
-//     to: 3,
-//   },
-//   normal: {
-//     from: 3,
-//     to: 5,
-//   },
-//   good: {
-//     from: 5,
-//     to: 8,
-//   },
-//   veryGood: {
-//     from: 8,
-//     to:10,
-//   },
-//   awesome: {
-//     from:10,
-//     to:100,
-//   },
-// };
+  const film = catalog.find(({id}) => id.toString() === idParams);
 
-// function getRatingDesctiption():void {
-//   const rating=1;
-//   Object.keys(ratingRange).forEach((key) => {
-//     if ((rating > ratingRange[key].from || rating === ratingRange[key].from) &&
-//   rating < ratingRange[key].to) {
-//       return key;
-//     }
-//   }, ratingRange);
-// }
+  const commentsFilm = comments.filter(({filmId}) => filmId.toString() === idParams);
 
-function FilmPage({film}:Props): JSX.Element {
+  if (film === undefined) {
+    return <NotFoundPage />;
+  }
+
+  const {posterImage, name, genre, released} = film;
+
   return (
     <>
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={film.posterImage} alt={film.name} />
+            <img src={posterImage} alt={name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
 
           <header className="page-header film-card__head">
-            <Logo />
+            <Logo classLogo="logo__link"/>
 
             <ul className="user-block">
               <li className="user-block__item">
@@ -76,10 +47,10 @@ function FilmPage({film}:Props): JSX.Element {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{film.name}</h2>
+              <h2 className="film-card__title">{name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{film.genre}</span>
-                <span className="film-card__year">{film.released}</span>
+                <span className="film-card__genre">{genre}</span>
+                <span className="film-card__year">{released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -95,7 +66,7 @@ function FilmPage({film}:Props): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to="/films/:id/review" className="btn film-card__button">Add review</Link>
+                <Link to={`/films/${film?.id}/review`}  className="btn film-card__button">Add review</Link>
               </div>
             </div>
           </div>
@@ -104,50 +75,17 @@ function FilmPage({film}:Props): JSX.Element {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={film.posterImage}  alt={`${film.name} poster`} width="218" height="327" />
+              <img src={posterImage}  alt={`${name} poster`} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <Link to="/films/:id" className="film-nav__link">Overview</Link>
-                  </li>
-                  <li className="film-nav__item">
-                    <Link to="/films/:id/details" className="film-nav__link">Details</Link>
-                  </li>
-                  <li className="film-nav__item">
-                    <Link to="/films/:id/reviews" className="film-nav__link">Reviews</Link>
-                  </li>
-                </ul>
-              </nav>
-
-              <div className="film-rating">
-                <div className="film-rating__score">{film.rating}</div>
-                <p className="film-rating__meta">
-                  {/* так нельзя? надо делать отдельный компонент на одну эту строчку? */}
-                  {/* <span className="film-rating__level">{getRatingDesctiption}</span> */}
-                  <span className="film-rating__count">{`${film.scoresCount} ratings`}</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>{film.description}</p>
-                {/* <p>In the 1930s, the Grand Budapest Hotel is a popular European ski resort, presided over by concierge Gustave H. (Ralph Fiennes). Zero, a junior lobby boy, becomes Gustave&apos;s friend and protege.</p>
-
-                <p>Gustave prides himself on providing first-className service to the hotel&apos;s guests, including satisfying the sexual needs of the many elderly women who stay there. When one of Gustave&apos;s lovers dies mysteriously, Gustave finds himself the recipient of a priceless painting and the chief suspect in her murder.</p> */}
-
-                <p className="film-card__director"><strong>{`Director: ${film.director}`}</strong></p>
-
-                <p className="film-card__starring"><strong>{`Starring: ${film.starring}`}</strong></p>
-              </div>
+              <FilmTabs film = {film} reviews={commentsFilm} />
             </div>
           </div>
         </div>
       </section>
 
       <div className="page-content">
-        {/* это надо трогать сейчас? */}
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
@@ -190,14 +128,7 @@ function FilmPage({film}:Props): JSX.Element {
           </div>
         </section>
 
-        <footer className="page-footer">
-          {/* claccName='logo__link--light' */}
-          <Logo />
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );

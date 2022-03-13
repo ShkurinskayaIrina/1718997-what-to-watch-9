@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ShkurinskayaIrina/1718997-what-to-watch-9/issues"
   },
-  "homepage": "https://github.com/ShkurinskayaIrina/1718997-what-to-watch-9#readme"
+  "homepage": "https://github.com/ShkurinskayaIrina/1718997-what-to-watch-9#readme",
+  "dependencies": {
+    "typescript": "^4.6.2"
+  }
 }

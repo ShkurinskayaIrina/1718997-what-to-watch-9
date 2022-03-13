@@ -10,8 +10,6 @@ import MyListPage from '../../pages/my-list-page';
 import PlayerPage from '../../pages/player-page';
 import SignInPage from '../../pages/sign-in-page';
 
-import FilmDetailsPage from '../film-details-page/film-details-page';
-import FilmReviewsPage from '../film-reviews-page/film-reviews-page';
 import NotFoundPage from '../not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 
@@ -22,6 +20,7 @@ type AppProps = {
 };
 
 function App({promoFilm, genresFilm, catalogFilms}: AppProps): JSX.Element {
+
   return (
     <BrowserRouter>
       <Routes>
@@ -45,19 +44,17 @@ function App({promoFilm, genresFilm, catalogFilms}: AppProps): JSX.Element {
         />
         <Route
           path={AppRoute.FilmPage}
-          element={<FilmPage film={promoFilm}/>}
-        />
-        <Route
-          path={AppRoute.FilmDetailsPage}
-          element={<FilmDetailsPage />}
-        />
-        <Route
-          path={AppRoute.FilmReviewsPage}
-          element={<FilmReviewsPage />}
+          element={<FilmPage />}
         />
         <Route
           path={AppRoute.AddReviewPage}
-          element={<AddReviewPage film={promoFilm}/>}
+          element={
+            <AddReviewPage
+              onAddReview={() => {
+                throw new Error('Function \'onAddReview\' isn\'t implemented.');
+              }}
+            />
+          }
         />
         <Route
           path={AppRoute.PlayerPage}

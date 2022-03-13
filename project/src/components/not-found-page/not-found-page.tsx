@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Logo from '../logo/logo';
+import Footer from '../footer/footer';
 
 function NotFoundPage(): JSX.Element {
   return (
@@ -13,7 +14,7 @@ function NotFoundPage(): JSX.Element {
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
-          <Logo />
+          <Logo  classLogo="logo__link"/>
 
           <ul className="user-block">
             <li className="user-block__item">
@@ -22,7 +23,7 @@ function NotFoundPage(): JSX.Element {
               </div>
             </li>
             <li className="user-block__item">
-              <a className="user-block__link"  href="/">Sign out</a>
+              <Link className="user-block__link"  to="/login">Sign out</Link>
             </li>
           </ul>
         </header>
@@ -37,14 +38,7 @@ function NotFoundPage(): JSX.Element {
         </div>
       </section>
 
-      <footer className="page-footer">
-        {/* claccName='logo__link--light' */}
-        <Logo />
-
-        <div className="copyright">
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
