@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { Link } from 'react-router-dom';
-import { filmTabs } from '../../const';
+import { filmTabs } from '../../consts';
 import OverviewTab from '../../components/film-tabs/overview-tab';
 import ReviewsTab from '../../components/film-tabs/reviews-tab';
 import DetailsTab from '../../components/film-tabs/details-tab';

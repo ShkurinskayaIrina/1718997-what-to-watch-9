@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../consts';
 
 import { Film } from '../../types/films';
 
@@ -15,18 +15,17 @@ import PrivateRoute from '../private-route/private-route';
 
 type AppProps = {
   promoFilm: Film;
-  genresFilm: string[];
   catalogFilms: Film[];
 };
 
-function App({promoFilm, genresFilm, catalogFilms}: AppProps): JSX.Element {
+function App({promoFilm, catalogFilms}: AppProps): JSX.Element {
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.MainPage }
-          element={<MainPage promoFilm={promoFilm} genresFilm={genresFilm} catalogFilms={catalogFilms} />}
+          element={<MainPage promoFilm={promoFilm} />}
         />
         <Route
           path={AppRoute.SignInPage}
@@ -36,7 +35,7 @@ function App({promoFilm, genresFilm, catalogFilms}: AppProps): JSX.Element {
           path={AppRoute.MyListPage}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.Auth}
+              authorizationStatus={AuthorizationStatus.NoAuth}
             >
               <MyListPage catalogFilms={catalogFilms}/>
             </PrivateRoute>

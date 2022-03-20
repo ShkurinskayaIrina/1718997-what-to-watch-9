@@ -1,4 +1,4 @@
-import { ratingRange } from '../../const';
+import { ratingRange } from '../../consts';
 import { FilmProps } from '../../types/films';
 
 function OverviewTab({film}:FilmProps): JSX.Element {

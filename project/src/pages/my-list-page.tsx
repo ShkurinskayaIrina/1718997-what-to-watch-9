@@ -31,9 +31,7 @@ function MyListPage({catalogFilms}:Props): JSX.Element {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <div className="catalog__films-list">
-          <FilmList catalogFilms={catalogFilms}/>
-        </div>
+        <FilmList catalogFilms={catalogFilms}/>
       </section>
 
       <Footer />

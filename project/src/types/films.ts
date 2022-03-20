@@ -22,10 +22,6 @@ export type FilmProps = {
   film: Film;
 }
 
-export type Genre = {
-  name: string;
-}
-
 export type Comment = {
   filmId: number;
   id: number;

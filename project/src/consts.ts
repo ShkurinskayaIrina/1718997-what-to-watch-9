@@ -1,12 +1,14 @@
 import { RatingRangeProps } from './types/films';
 
+export const FILM_COUNT_PER_STEP = 8;
+
+export const ALL_GENRES = 'All genres';
+
 export enum AppRoute {
     MainPage = '/',
     SignInPage = '/login',
     MyListPage = '/mylist',
     FilmPage = '/films/:id',
-    // FilmDetailsPage = '/films/:id/details',
-    // FilmReviewsPage = '/films/:id/reviews',
     AddReviewPage = '/films/:id/review',
     PlayerPage = '/player/:id',
   }
@@ -16,19 +18,6 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
-
-export const genres = [
-  'All genres',
-  'Comedies',
-  'Crime',
-  'Documentary',
-  'Dramas',
-  'Horror',
-  'Kids & Family',
-  'Romance',
-  'Sci-Fi',
-  'Thrillers',
-];
 
 export const filmTabs = [
   'Overview',
@@ -58,3 +47,5 @@ export const ratingRange: RatingRangeProps = {
     to:100,
   },
 };
+
+

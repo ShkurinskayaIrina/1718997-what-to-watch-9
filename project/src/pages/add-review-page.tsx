@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { Fragment, useState, ChangeEvent, FormEvent } from 'react';
+
 import Logo from '../components/logo/logo';
 
 import { catalog } from '../mocks/data';
@@ -9,9 +10,8 @@ type Props = {
 }
 
 function AddReviewPage({onAddReview}:Props): JSX.Element {
-  const {id: idParams} = useParams();
-
-  const film = catalog.find(({id}) => id.toString() === idParams);
+  const {id} = useParams();
+  const filmData = catalog.find((film) => film.id.toString() === id);
 
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(8);
@@ -19,7 +19,7 @@ function AddReviewPage({onAddReview}:Props): JSX.Element {
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={film?.backgroundImage} alt={film?.name} />
+          <img src={filmData?.backgroundImage} alt={filmData?.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -30,10 +30,10 @@ function AddReviewPage({onAddReview}:Props): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <Link to={`/films/${film?.id}`} className="breadcrumbs__link">{film?.name} </Link>
+                <Link to={`/films/${filmData?.id}`} className="breadcrumbs__link">{filmData?.name} </Link>
               </li>
               <li className="breadcrumbs__item">
-                <Link to={`/films/${film?.id}/review`} className="breadcrumbs__link">Add review</Link>
+                <Link to={`/films/${filmData?.id}/review`} className="breadcrumbs__link">Add review</Link>
               </li>
             </ul>
           </nav>
@@ -51,7 +51,7 @@ function AddReviewPage({onAddReview}:Props): JSX.Element {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={film?.posterImage} alt={film?.name} width="218" height="327" />
+          <img src={filmData?.posterImage} alt={filmData?.name} width="218" height="327" />
         </div>
       </div>
 
@@ -64,8 +64,8 @@ function AddReviewPage({onAddReview}:Props): JSX.Element {
         >
           <div className="rating">
             <div className="rating__stars">
-              {[...Array(10)].reverse().map((_,id) => {
-                const keyValue = 10-id;
+              {[...Array(10)].reverse().map((_,index) => {
+                const keyValue = 10-index;
                 return (
                   <Fragment key={keyValue}>
                     <input className="rating__input" id={`star-${keyValue}`} type="radio" name="rating" value={keyValue}
