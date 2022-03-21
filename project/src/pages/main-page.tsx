@@ -4,15 +4,21 @@ import FilmList from '../components/film-list/film-list';
 import GenresList from '../components/genres-list/genres-list';
 import Footer from '../components/footer/footer';
 import Logo from '../components/logo/logo';
+import ButtonShowMore from '../components/button-show-more/button-show-more';
 import { Film } from '../types/films';
+import { useAppSelector } from '../hooks/';
 
 type MainProps = {
   promoFilm: Film,
-  genresFilm: string[],
-  catalogFilms: Film[],
 };
 
-function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element {
+function MainPage({promoFilm}: MainProps): JSX.Element {
+
+  const genres = useAppSelector((state) => state.genres);
+  const genreCurrent = useAppSelector((state) => state.genreCurrent);
+  const filmsByGenre = useAppSelector((state) => state.filmsByGenre);
+  const shownFilmsCount = useAppSelector((state) => state.shownFilmsCount);
+
   return (
     <>
       <section className="film-card">
@@ -32,7 +38,7 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
               </div>
             </li>
             <li className="user-block__item">
-              <Link to="/login" className="user-block__link">Sign out</Link>
+              <Link to="/" className="user-block__link">Sign out</Link>
             </li>
           </ul>
         </header>
@@ -73,17 +79,12 @@ function MainPage({promoFilm, genresFilm, catalogFilms}: MainProps): JSX.Element
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            { genresFilm.map((genre) => <GenresList name={genre} key={genre}/>) }
-          </ul>
+          <GenresList genresList={genres} genreCurrent={genreCurrent} />
 
-          <div className="catalog__films-list">
-            <FilmList catalogFilms={catalogFilms} />
-          </div>
+          <FilmList catalogFilms={filmsByGenre.slice(0,shownFilmsCount)} />
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          {filmsByGenre.length>shownFilmsCount ? <ButtonShowMore/> :''}
+
         </section>
       </div>
 

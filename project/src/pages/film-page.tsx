@@ -4,21 +4,26 @@ import Logo from '../components/logo/logo';
 import Footer from '../components/footer/footer';
 import NotFoundPage from '../components/not-found-page/not-found-page';
 import FilmTabs from '../components/film-tabs/film-tabs';
+import FilmList from '../components/film-list/film-list';
 
 import { catalog, comments } from '../mocks/data';
 
+const FILM_COUNT = 4;
+
 function FilmPage(): JSX.Element {
-  const {id: idParams} = useParams();
+  const {id} = useParams();
 
-  const film = catalog.find(({id}) => id.toString() === idParams);
+  const filmData = catalog.find((film) => film.id.toString() === id);
 
-  const commentsFilm = comments.filter(({filmId}) => filmId.toString() === idParams);
+  const commentsFilm = comments.filter(({filmId}) => filmId.toString() === id);
 
-  if (film === undefined) {
+  if (filmData === undefined) {
     return <NotFoundPage />;
   }
 
-  const {posterImage, name, genre, released} = film;
+  const {posterImage, name, genre, released} = filmData;
+
+  const similarFilmsList = catalog.filter((filmGenre) => filmGenre.genre === genre && filmGenre.id.toString()!==id ).slice(0,FILM_COUNT);
 
   return (
     <>
@@ -66,7 +71,7 @@ function FilmPage(): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to={`/films/${film?.id}/review`}  className="btn film-card__button">Add review</Link>
+                <Link to={`/films/${filmData?.id}/review`}  className="btn film-card__button">Add review</Link>
               </div>
             </div>
           </div>
@@ -79,7 +84,7 @@ function FilmPage(): JSX.Element {
             </div>
 
             <div className="film-card__desc">
-              <FilmTabs film = {film} reviews={commentsFilm} />
+              <FilmTabs film = {filmData} reviews={commentsFilm} />
             </div>
           </div>
         </div>
@@ -89,43 +94,7 @@ function FilmPage(): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <div className="catalog__films-list">
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <Link to="/films/:id" className="small-film-card__link">Fantastic Beasts: The Crimes of Grindelwald</Link>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/bohemian-rhapsody.jpg" alt="Bohemian Rhapsody" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <Link to="/films/:id" className="small-film-card__link">Bohemian Rhapsody</Link>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/macbeth.jpg" alt="Macbeth" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <Link to="/films/:id" className="small-film-card__link">Macbeth</Link>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/aviator.jpg" alt="Aviator" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <Link to="/films/:id" className="small-film-card__link">Aviator</Link>
-              </h3>
-            </article>
-          </div>
+          <FilmList catalogFilms={similarFilmsList} />
         </section>
 
         <Footer />

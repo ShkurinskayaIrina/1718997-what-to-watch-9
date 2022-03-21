@@ -10,10 +10,12 @@ function FilmCard( {film}: FilmProps): JSX.Element {
 
   const [activePlayer, setActivePlayer] = useState<number | null>(null);
 
-  let timer: number | null = null;
+  const msInSecond = 1000;
+
+  let timer: ReturnType<typeof setTimeout> | null = null;
 
   const handleMouseEnter = () => {
-    timer = window.setTimeout(() => setActivePlayer(activePlayer === film.id ? -1 : film.id), 1000);
+    timer = setTimeout(() => setActivePlayer(activePlayer === film.id ? -1 : film.id), msInSecond);
   };
 
   const handleMouseLeave = () => {
