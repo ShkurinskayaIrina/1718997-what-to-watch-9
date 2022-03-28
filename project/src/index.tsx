@@ -1,19 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import App from './components/app/app';
-import {store} from './store';
 
-import { catalog } from './mocks/data';
-import { getRandomPositive } from './mocks/utils';
+import App from './components/app/app';
+import ErrorMessage from './components/error-message/error-message';
+
+import { store } from './store/index';
+import { fetchCatalog, fetchPromo, checkAuthAction } from './store/api-actions';
+
+store.dispatch(fetchCatalog());
+store.dispatch(fetchPromo());
+store.dispatch(checkAuthAction());
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store = {store}>
-      <App
-        promoFilm={catalog[getRandomPositive(0,7)]}
-        catalogFilms={catalog}
-      />
+      <ErrorMessage />
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'));

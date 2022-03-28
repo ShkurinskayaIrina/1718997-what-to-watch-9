@@ -1,36 +1,52 @@
 import { Link, useParams } from 'react-router-dom';
-import Logo from '../components/logo/logo';
+import {useAppSelector} from '../hooks';
 
+import Logo from '../components/logo/logo';
 import Footer from '../components/footer/footer';
 import NotFoundPage from '../components/not-found-page/not-found-page';
 import FilmTabs from '../components/film-tabs/film-tabs';
 import FilmList from '../components/film-list/film-list';
 
-import { catalog, comments } from '../mocks/data';
+import { AuthorizationStatus, SIMILAR_FILM_COUNT } from '../consts';
 
-const FILM_COUNT = 4;
+import { store } from '../store/index';
+import { fetchFilm, fetchComments, fetchSimilarFilms } from '../store/api-actions';
 
 function FilmPage(): JSX.Element {
   const {id} = useParams();
 
-  const filmData = catalog.find((film) => film.id.toString() === id);
+  const catalog = useAppSelector((state) => state.catalog);
 
-  const commentsFilm = comments.filter(({filmId}) => filmId.toString() === id);
+  const filmFind = catalog.find((film) => film.id.toString() === id);
 
-  if (filmData === undefined) {
+  store.dispatch(fetchFilm(Number(id)));
+
+  const filmCurrent = useAppSelector((state) => state.filmCurrent);
+
+  store.dispatch(fetchComments(Number(id)));
+  const commentsFilm = useAppSelector((state) => state.comments);
+
+  store.dispatch(fetchSimilarFilms(Number(id)));
+  const similarFilmsList = useAppSelector((state) => state.similarFilms).slice(0,SIMILAR_FILM_COUNT);
+
+  const authorizationStatusUser = useAppSelector((state) => state.authorizationStatus);
+
+  if (filmFind === undefined) {
     return <NotFoundPage />;
   }
 
-  const {posterImage, name, genre, released} = filmData;
-
-  const similarFilmsList = catalog.filter((filmGenre) => filmGenre.genre === genre && filmGenre.id.toString()!==id ).slice(0,FILM_COUNT);
+  function ButtonAddReview():JSX.Element {
+    return (
+      <Link to={`/films/${filmCurrent?.id}/review`}  className="btn film-card__button">Add review</Link>
+    );
+  }
 
   return (
     <>
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={posterImage} alt={name} />
+            <img src={filmCurrent?.backgroundImage} alt={filmCurrent?.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -52,10 +68,10 @@ function FilmPage(): JSX.Element {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{name}</h2>
+              <h2 className="film-card__title">{filmCurrent?.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{genre}</span>
-                <span className="film-card__year">{released}</span>
+                <span className="film-card__genre">{filmCurrent?.genre}</span>
+                <span className="film-card__year">{filmCurrent?.released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -71,7 +87,7 @@ function FilmPage(): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to={`/films/${filmData?.id}/review`}  className="btn film-card__button">Add review</Link>
+                {authorizationStatusUser===AuthorizationStatus.Auth? <ButtonAddReview /> : ''}
               </div>
             </div>
           </div>
@@ -80,11 +96,11 @@ function FilmPage(): JSX.Element {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={posterImage}  alt={`${name} poster`} width="218" height="327" />
+              <img src={filmCurrent?.posterImage}  alt={`${filmCurrent?.name} poster`} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <FilmTabs film = {filmData} reviews={commentsFilm} />
+              <FilmTabs film = {filmCurrent} reviews={commentsFilm}  />
             </div>
           </div>
         </div>
@@ -94,7 +110,7 @@ function FilmPage(): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmList catalogFilms={similarFilmsList} />
+          <FilmList catalogFilms={similarFilmsList}/>
         </section>
 
         <Footer />

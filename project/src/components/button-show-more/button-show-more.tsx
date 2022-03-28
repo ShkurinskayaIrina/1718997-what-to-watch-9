@@ -6,7 +6,9 @@ function ButtonShowMore():JSX.Element {
 
   return (
     <div className="catalog__more">
-      <button className="catalog__button" type="button" onClick = {() => {dispatch(showMoreFilms());}}>
+      <button className="catalog__button" type="button"
+        onClick = {() => {dispatch(showMoreFilms());}}
+      >
           Show more
       </button>
     </div>

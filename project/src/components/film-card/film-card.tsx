@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FilmProps } from '../../types/films';
+import { TIMEOUT_LAG_PLAYER } from '../../consts';
 
 import VideoPlayer from '../../components/video-player/video-player';
 
@@ -10,12 +11,10 @@ function FilmCard( {film}: FilmProps): JSX.Element {
 
   const [activePlayer, setActivePlayer] = useState<number | null>(null);
 
-  const msInSecond = 1000;
-
   let timer: ReturnType<typeof setTimeout> | null = null;
 
   const handleMouseEnter = () => {
-    timer = setTimeout(() => setActivePlayer(activePlayer === film.id ? -1 : film.id), msInSecond);
+    timer = setTimeout(() => setActivePlayer(activePlayer === film.id ? -1 : film.id), TIMEOUT_LAG_PLAYER);
   };
 
   const handleMouseLeave = () => {

@@ -2,6 +2,12 @@ import { RatingRangeProps } from './types/films';
 
 export const FILM_COUNT_PER_STEP = 8;
 
+export const SIMILAR_FILM_COUNT = 4;
+
+export const TIMEOUT_LAG_PLAYER = 1000;
+
+export const TIMEOUT_SHOW_ERROR = 2000;
+
 export const ALL_GENRES = 'All genres';
 
 export enum AppRoute {
@@ -17,6 +23,20 @@ export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
+}
+
+export enum APIRoute {
+  Films = '/films',
+  Comments = '/comments',
+  Promo = '/promo',
+  Login = '/login',
+  Logout = '/logout',
+}
+
+export enum HTTP_CODE {
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  NOT_FOUND = 404,
 }
 
 export const filmTabs = [

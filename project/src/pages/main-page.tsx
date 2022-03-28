@@ -5,15 +5,11 @@ import GenresList from '../components/genres-list/genres-list';
 import Footer from '../components/footer/footer';
 import Logo from '../components/logo/logo';
 import ButtonShowMore from '../components/button-show-more/button-show-more';
-import { Film } from '../types/films';
 import { useAppSelector } from '../hooks/';
 
-type MainProps = {
-  promoFilm: Film,
-};
 
-function MainPage({promoFilm}: MainProps): JSX.Element {
-
+function MainPage(): JSX.Element {
+  const promo = useAppSelector((state) => state.promo);
   const genres = useAppSelector((state) => state.genres);
   const genreCurrent = useAppSelector((state) => state.genreCurrent);
   const filmsByGenre = useAppSelector((state) => state.filmsByGenre);
@@ -23,7 +19,7 @@ function MainPage({promoFilm}: MainProps): JSX.Element {
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={promoFilm.backgroundImage} alt={promoFilm.name} />
+          <img src={promo?.backgroundImage} alt={promo?.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -46,14 +42,14 @@ function MainPage({promoFilm}: MainProps): JSX.Element {
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src={promoFilm.posterImage} alt={`${promoFilm.name} poster`}  width="218" height="327" />
+              <img src={promo?.posterImage} alt={`${promo?.name} poster`}  width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{promoFilm.name}</h2>
+              <h2 className="film-card__title">{promo?.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{promoFilm.genre}</span>
-                <span className="film-card__year">{promoFilm.released}</span>
+                <span className="film-card__genre">{promo?.genre}</span>
+                <span className="film-card__year">{promo?.released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -84,7 +80,6 @@ function MainPage({promoFilm}: MainProps): JSX.Element {
           <FilmList catalogFilms={filmsByGenre.slice(0,shownFilmsCount)} />
 
           {filmsByGenre.length>shownFilmsCount ? <ButtonShowMore/> :''}
-
         </section>
       </div>
 

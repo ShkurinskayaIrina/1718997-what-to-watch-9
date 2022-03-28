@@ -12,7 +12,7 @@ type Props = {
   reviews: Comment[];
 }
 function FilmTabs({film, reviews}: Props): JSX.Element {
-  const [activeTab, setActiveTab] = useState<string>('Overview');
+  const [activeTab, setActiveTab] = useState('Overview');
 
   const handleClick = (tab:string) => {
     setActiveTab(tab);
