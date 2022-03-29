@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../consts';
+import { Routes, Route } from 'react-router-dom';
 
-import { Film } from '../../types/films';
+import { AppRoute } from '../../consts';
+import {useAppSelector} from '../../hooks';
+import { isCheckedAuth } from '../../films';
 
 import MainPage from '../../pages/main-page';
 import AddReviewPage from '../../pages/add-review-page';
@@ -12,20 +13,27 @@ import SignInPage from '../../pages/sign-in-page';
 
 import NotFoundPage from '../not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
+import Preloader from '../preloader/preloader';
 
-type AppProps = {
-  promoFilm: Film;
-  catalogFilms: Film[];
-};
+import HistoryRouter from '../../components/history-route/history-route';
 
-function App({promoFilm, catalogFilms}: AppProps): JSX.Element {
+import browserHistory from '../../browser-history';
+
+function App(): JSX.Element {
+  const {authorizationStatus, isDataLoaded} = useAppSelector((state) => state);
+
+  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
+    return (
+      <Preloader />
+    );
+  }
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={AppRoute.MainPage }
-          element={<MainPage promoFilm={promoFilm} />}
+          element={<MainPage />}
         />
         <Route
           path={AppRoute.SignInPage}
@@ -35,9 +43,9 @@ function App({promoFilm, catalogFilms}: AppProps): JSX.Element {
           path={AppRoute.MyListPage}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
+              authorizationStatus={authorizationStatus}
             >
-              <MyListPage catalogFilms={catalogFilms}/>
+              <MyListPage />
             </PrivateRoute>
           }
         />
@@ -57,14 +65,14 @@ function App({promoFilm, catalogFilms}: AppProps): JSX.Element {
         />
         <Route
           path={AppRoute.PlayerPage}
-          element={<PlayerPage film={promoFilm}/>}
+          element={<PlayerPage />}
         />
         <Route
           path="*"
           element={<NotFoundPage />}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

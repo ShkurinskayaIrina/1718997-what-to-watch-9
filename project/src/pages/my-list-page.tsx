@@ -1,14 +1,9 @@
 import { Link } from 'react-router-dom';
 import Logo from '../components/logo/logo';
 import Footer from '../components/footer/footer';
-import FilmList from '../components/film-list/film-list';
-import { Film } from '../types/films';
+// import FilmList from '../components/film-list/film-list';
 
-type Props = {
-  catalogFilms: Film[],
-};
-
-function MyListPage({catalogFilms}:Props): JSX.Element {
+function MyListPage(): JSX.Element {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -31,7 +26,7 @@ function MyListPage({catalogFilms}:Props): JSX.Element {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <FilmList catalogFilms={catalogFilms}/>
+        {/* <FilmList /> */}
       </section>
 
       <Footer />

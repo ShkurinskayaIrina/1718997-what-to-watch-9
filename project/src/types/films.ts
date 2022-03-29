@@ -18,6 +18,8 @@ export type Film = {
   isFavorite: boolean;
 }
 
+export type Catalog = Film[];
+
 export type FilmProps = {
   film: Film;
 }
@@ -33,6 +35,8 @@ export type Comment = {
     name: string;
   }
 }
+
+export type Comments = Comment[];
 
 type Rating = {
   from: number,
