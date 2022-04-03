@@ -24,15 +24,18 @@ export type FilmProps = {
   film: Film;
 }
 
-export type Comment = {
-  filmId: number;
-  id: number;
-  comment: string;
-  date: string;
-  rating: number;
+export type NewComment = {
+  filmId: number,
+  comment: string,
+  rating: number,
+}
+
+export type Comment = NewComment & {
+  id: number,
+  date: string,
   user: {
-    id: number;
-    name: string;
+    id: number,
+    name: string,
   }
 }
 

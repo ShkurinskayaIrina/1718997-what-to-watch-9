@@ -1,13 +1,13 @@
-import { showMoreFilms } from '../../store/action';
-import { useAppDispatch } from '../../hooks';
+type Props = {
+  onAddReview: () => void;
+}
 
-function ButtonShowMore():JSX.Element {
-  const dispatch = useAppDispatch();
+function ButtonShowMore({onAddReview}: Props):JSX.Element {
 
   return (
     <div className="catalog__more">
       <button className="catalog__button" type="button"
-        onClick = {() => {dispatch(showMoreFilms());}}
+        onClick={(evt) => onAddReview()}
       >
           Show more
       </button>

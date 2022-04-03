@@ -1,8 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { chooseGenre, loadCatalog, loadFilm, loadComments, loadSimilarFilms} from './action';
-import { loadPromo, showMoreFilms, requireAuthorization, setError } from './action';
+
+import { chooseGenre, loadCatalog, loadFilm, loadComments, loadSimilarFilms } from './action';
+import { loadPromo, requireAuthorization, setError, fetchUserData } from './action';
+
 import { Catalog, Film, Comment } from '../types/films';
-import { ALL_GENRES, FILM_COUNT_PER_STEP, AuthorizationStatus } from '../consts';
+import { UserData } from '../types/user-data';
+
+import { ALL_GENRES, AuthorizationStatus, unknownUserData } from '../consts';
 
 type Props = {
   catalog: Catalog,
@@ -10,11 +14,9 @@ type Props = {
   filmCurrent: Film,
   similarFilms: Catalog,
   comments: Comment[],
-  genres: string[],
   genreCurrent: string,
-  filmsByGenre: Catalog,
-  shownFilmsCount: number,
   authorizationStatus: AuthorizationStatus,
+  userData: UserData,
   error: string,
   isDataLoaded: boolean,
 }
@@ -25,11 +27,9 @@ const initialState: Props = {
   filmCurrent: {} as Film,
   similarFilms: [],
   comments: [],
-  genres: [],
   genreCurrent: ALL_GENRES,
-  filmsByGenre: [],
-  shownFilmsCount: FILM_COUNT_PER_STEP,
   authorizationStatus: AuthorizationStatus.Unknown,
+  userData: unknownUserData,
   error: '',
   isDataLoaded: false,
 };
@@ -38,9 +38,7 @@ export const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadCatalog, (state, action) => {
       state.catalog = action.payload;
-      state.filmsByGenre = action.payload;
       state.genreCurrent = ALL_GENRES;
-      state.genres = [ALL_GENRES,...new Set( action.payload.map((film) => film.genre))];
       state.isDataLoaded = true;
     })
     .addCase(loadFilm, (state, action) => {
@@ -56,15 +54,13 @@ export const reducer = createReducer(initialState, (builder) => {
       state.promo = action.payload;
     })
     .addCase(chooseGenre, (state, action) => {
-      const catalog = state.catalog;
       state.genreCurrent = action.payload;
-      state.filmsByGenre = action.payload===ALL_GENRES ? catalog :catalog.filter(({genre}) => genre === action.payload);
-    })
-    .addCase(showMoreFilms, (state) => {
-      state.shownFilmsCount =  Math.min(state.filmsByGenre.length, state.shownFilmsCount + FILM_COUNT_PER_STEP);
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(fetchUserData,(state, action) =>{
+      state.userData = action.payload;
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;

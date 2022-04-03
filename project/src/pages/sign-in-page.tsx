@@ -1,4 +1,4 @@
-import { useRef, FormEvent } from 'react';
+import { useRef, FormEvent, ChangeEvent} from 'react';
 
 import {useAppDispatch} from '../hooks';
 
@@ -7,6 +7,8 @@ import {loginAction} from '../store/api-actions';
 
 import Logo from '../components/logo/logo';
 import  Footer from '../components/footer/footer';
+
+import { ErrorMessages } from '../consts';
 
 function SignInPage(): JSX.Element {
   //заменить на UseState
@@ -19,9 +21,39 @@ function SignInPage(): JSX.Element {
     dispatch(loginAction(authData));
   };
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const emailToggleHandler = (evt:ChangeEvent<HTMLInputElement>) => {
     evt.preventDefault();
 
+    if (emailRef.current !== null) {
+      const email = /^[\w-.]+@[\w-]+\.[a-z]{2,4}$/i;
+      if (emailRef.current.value.match(email)) {
+        evt.target.setCustomValidity('');
+      } else {
+        evt.target.setCustomValidity(ErrorMessages.EMAIL);
+      }
+    }
+
+    evt.target.reportValidity();
+  };
+
+  const passwordToggleHandler = (evt:ChangeEvent<HTMLInputElement>) => {
+    evt.preventDefault();
+
+    if (passwordRef.current !== null) {
+      const passWord = /^[^\s][0-9][a-zA-Zа-яА-ЯёЁ\s]*$/;
+
+      if (passwordRef.current.value.match(passWord)) {
+        evt.target.setCustomValidity('');
+      } else {
+        evt.target.setCustomValidity(ErrorMessages.PASSWORD);
+      }
+    }
+
+    evt.target.reportValidity();
+  };
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
     if (emailRef.current !== null && passwordRef.current !== null) {
       onSubmit({
         email: emailRef.current.value,
@@ -49,6 +81,7 @@ function SignInPage(): JSX.Element {
                 placeholder="Email address"
                 name="user-email"
                 id="user-email"
+                onInput={emailToggleHandler}
               />
               <label className="sign-in__label visually-hidden" htmlFor="user-email">Email address</label>
             </div>
@@ -60,6 +93,7 @@ function SignInPage(): JSX.Element {
                 placeholder="Password"
                 name="user-password"
                 id="user-password"
+                onInput={passwordToggleHandler}
               />
               <label className="sign-in__label visually-hidden" htmlFor="user-password">Password</label>
             </div>

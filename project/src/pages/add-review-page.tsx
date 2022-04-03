@@ -1,25 +1,50 @@
 import { Link, useParams } from 'react-router-dom';
-import { Fragment, useState, ChangeEvent, FormEvent } from 'react';
+import { Fragment,  ChangeEvent, FormEvent, useState, useEffect } from 'react';
+
+import { useAppSelector, useAppDispatch } from '../hooks';
 
 import Logo from '../components/logo/logo';
 
-import { catalog } from '../mocks/data';
+import { NewComment } from '../types/films';
 
-type Props = {
-  onAddReview: (rating: number, reviewText: string) => void;
-}
+import { store } from '../store/index';
+import { fetchFilm } from '../store/api-actions';
+import {addCommentAction} from '../store/api-actions';
 
-function AddReviewPage({onAddReview}:Props): JSX.Element {
-  const {id} = useParams();
-  const filmData = catalog.find((film) => film.id.toString() === id);
+function AddReviewPage(): JSX.Element {
+  const {id:idFilm} = useParams();
+
+  useEffect(() => {
+    store.dispatch(fetchFilm(Number(idFilm)));
+  }, [idFilm]);
+
+  const { id, name, backgroundImage, posterImage }  = useAppSelector((state) => state.filmCurrent);
 
   const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(8);
+  const [rating, setRating] = useState(0);
+
+  const dispatch = useAppDispatch();
+
+  const onSubmit = (commentData: NewComment) => {
+    dispatch(addCommentAction(commentData));
+  };
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    if (comment) {
+      onSubmit({
+        filmId: id,
+        comment: comment,
+        rating: rating,
+      });
+    }
+  };
+
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={filmData?.backgroundImage} alt={filmData?.name} />
+          <img src={backgroundImage} alt={name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -30,10 +55,10 @@ function AddReviewPage({onAddReview}:Props): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <Link to={`/films/${filmData?.id}`} className="breadcrumbs__link">{filmData?.name} </Link>
+                <Link to={`/films/${id}`} className="breadcrumbs__link">{name} </Link>
               </li>
               <li className="breadcrumbs__item">
-                <Link to={`/films/${filmData?.id}/review`} className="breadcrumbs__link">Add review</Link>
+                <Link to={`/films/${id}/review`} className="breadcrumbs__link">Add review</Link>
               </li>
             </ul>
           </nav>
@@ -51,16 +76,13 @@ function AddReviewPage({onAddReview}:Props): JSX.Element {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={filmData?.posterImage} alt={filmData?.name} width="218" height="327" />
+          <img src={posterImage} alt={name} width="218" height="327" />
         </div>
       </div>
 
       <div className="add-review">
         <form action="#" className="add-review__form"
-          onSubmit={(evt: FormEvent<HTMLFormElement>) => {
-            evt.preventDefault();
-            onAddReview(rating, comment);
-          }}
+          onSubmit={handleSubmit}
         >
           <div className="rating">
             <div className="rating__stars">
@@ -82,7 +104,12 @@ function AddReviewPage({onAddReview}:Props): JSX.Element {
           <div className="add-review__text">
             <textarea className="add-review__textarea" name="comment" id="review-text" placeholder="Review text" onChange={(event) => setComment(event.target.value)} value={comment}></textarea>
             <div className="add-review__submit">
-              <button className="add-review__btn" type="submit">Post</button>
+              <button
+                className="add-review__btn"
+                type="submit"
+                disabled={(!comment || rating===0)}
+              >Post
+              </button>
             </div>
 
           </div>
