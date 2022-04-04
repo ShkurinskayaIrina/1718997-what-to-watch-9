@@ -2,17 +2,17 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { api, store } from './index';
 
-import { saveToken, dropToken } from '../services/token';
+import { dropToken, saveToken } from '../services/token';
 import { errorHandle } from '../services/error-handle';
 
 import { loadCatalog, loadFilm, loadComments, loadPromo, loadSimilarFilms } from './action';
-import { requireAuthorization, setError, redirectToRoute } from './action';
+import { requireAuthorization, setError, redirectToRoute, fetchUserData } from './action';
 
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR, AppRoute } from '../consts';
+import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR, AppRoute, unknownUserData } from '../consts';
 
-import { Catalog, Film, Comments } from '../types/films';
+import { Catalog, Film, Comments, NewComment } from '../types/films';
 import { AuthData } from '../types/auth-data';
-import { UserData } from '../types/user-data';
+import { MaxUserData } from '../types/user-data';
 
 export const clearErrorAction = createAsyncThunk(
   'films/clearError',
@@ -88,8 +88,9 @@ export const checkAuthAction = createAsyncThunk(
   'user/checkAuth',
   async () => {
     try {
-      await api.get(APIRoute.Login);
+      const {data} = await api.get(APIRoute.Login);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(fetchUserData(data));
     } catch(error) {
       errorHandle(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
@@ -101,9 +102,10 @@ export const loginAction = createAsyncThunk(
   'user/login',
   async ({email, password}: AuthData) => {
     try {
-      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-      saveToken(token);
+      const {data: userData} = await api.post<MaxUserData>(APIRoute.Login, {email, password});
+      saveToken(userData.token);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(fetchUserData(userData));
       store.dispatch(redirectToRoute(AppRoute.MainPage));
     } catch (error) {
       errorHandle(error);
@@ -112,6 +114,7 @@ export const loginAction = createAsyncThunk(
   },
 );
 
+
 export const logoutAction = createAsyncThunk(
   'user/logout',
   async () => {
@@ -119,6 +122,20 @@ export const logoutAction = createAsyncThunk(
       await api.delete(APIRoute.Logout);
       dropToken();
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      store.dispatch(fetchUserData(unknownUserData));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const addCommentAction = createAsyncThunk(
+  'film/newComment',
+  async ({comment, rating, filmId}: NewComment) => {
+    try {
+      const { data } = await api.post<Comments>(`comments/${filmId}`, {comment, rating});
+      store.dispatch(loadComments(data));
+      store.dispatch(redirectToRoute(`/films/${filmId}`));
     } catch (error) {
       errorHandle(error);
     }

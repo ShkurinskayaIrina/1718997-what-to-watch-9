@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import { AppRoute } from '../../consts';
 import {useAppSelector} from '../../hooks';
@@ -11,6 +12,7 @@ import MyListPage from '../../pages/my-list-page';
 import PlayerPage from '../../pages/player-page';
 import SignInPage from '../../pages/sign-in-page';
 
+import ErrorMessage from '../error-message/error-message';
 import NotFoundPage from '../not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import Preloader from '../preloader/preloader';
@@ -19,12 +21,28 @@ import HistoryRouter from '../../components/history-route/history-route';
 
 import browserHistory from '../../browser-history';
 
+import { store } from '../../store/index';
+import { fetchCatalog, fetchPromo, checkAuthAction } from '../../store/api-actions';
+
 function App(): JSX.Element {
   const {authorizationStatus, isDataLoaded} = useAppSelector((state) => state);
+  const error = useAppSelector((state) => state.error);
+
+  useEffect(() => {
+    store.dispatch(fetchCatalog());
+    store.dispatch(fetchPromo());
+    store.dispatch(checkAuthAction());
+  }, []);
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return (
       <Preloader />
+    );
+  }
+
+  if (error) {
+    return (
+      <ErrorMessage error={error}/>
     );
   }
 
@@ -55,13 +73,7 @@ function App(): JSX.Element {
         />
         <Route
           path={AppRoute.AddReviewPage}
-          element={
-            <AddReviewPage
-              onAddReview={() => {
-                throw new Error('Function \'onAddReview\' isn\'t implemented.');
-              }}
-            />
-          }
+          element={<AddReviewPage />}
         />
         <Route
           path={AppRoute.PlayerPage}

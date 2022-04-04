@@ -1,25 +1,24 @@
-import {useAppSelector} from '../../hooks/index';
+type Props = {
+  error: string;
+}
 
-function ErrorMessage(): JSX.Element | null {
-  const error = useAppSelector((state) => state.error);
+function ErrorMessage({error}: Props): JSX.Element | null {
 
-  if (error) {
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          top: '30px',
-          right: '30px',
-          padding: '10px',
-          backgroundColor: '#d96666',
-          color: 'white',
-          borderRadius: '5px',
-        }}
-      >
-        {error}
-      </div>
-    );
-  }
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: '30px',
+        right: '30px',
+        padding: '10px',
+        backgroundColor: '#d96666',
+        color: 'white',
+        borderRadius: '5px',
+      }}
+    >
+      {error}
+    </div>
+  );
 
   return null;
 }

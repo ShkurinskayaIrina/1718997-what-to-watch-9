@@ -1,55 +1,56 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
+import User from '../components/user/user';
 import FilmList from '../components/film-list/film-list';
 import GenresList from '../components/genres-list/genres-list';
 import Footer from '../components/footer/footer';
 import Logo from '../components/logo/logo';
 import ButtonShowMore from '../components/button-show-more/button-show-more';
+
 import { useAppSelector } from '../hooks/';
 
+import { ALL_GENRES, MAX_GENRES_COUNT, FILM_COUNT_PER_STEP } from '../consts';
 
 function MainPage(): JSX.Element {
-  const promo = useAppSelector((state) => state.promo);
-  const genres = useAppSelector((state) => state.genres);
-  const genreCurrent = useAppSelector((state) => state.genreCurrent);
-  const filmsByGenre = useAppSelector((state) => state.filmsByGenre);
-  const shownFilmsCount = useAppSelector((state) => state.shownFilmsCount);
+
+  const { catalog, promo, genreCurrent, userData, authorizationStatus }= useAppSelector((state) => state);
+  const { backgroundImage, name, posterImage, genre, released } = promo;
+
+  const genres = [ALL_GENRES,...new Set(catalog.map((film) => film.genre))].slice(0, MAX_GENRES_COUNT);
+  const filmsByGenre = genreCurrent===ALL_GENRES ? catalog :catalog.filter((film) => film.genre === genreCurrent);
+
+  const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILM_COUNT_PER_STEP);
+  const filmsForRender = filmsByGenre.slice(0,renderedFilmsCount);
+
+  function handleShowMoreButtonClick() {
+    setRenderedFilmsCount(Math.min(filmsByGenre.length, renderedFilmsCount + FILM_COUNT_PER_STEP));
+  }
 
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={promo?.backgroundImage} alt={promo?.name} />
+          <img src={backgroundImage} alt={name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
-          <Logo classLogo="logo__link"/>
-
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <Link to="/" className="user-block__link">Sign out</Link>
-            </li>
-          </ul>
+          <Logo classLogo="logo__link" />
+          <User userData={userData} authorizationStatus={authorizationStatus}/>
         </header>
 
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src={promo?.posterImage} alt={`${promo?.name} poster`}  width="218" height="327" />
+              <img src={posterImage} alt={`${name} poster`}  width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{promo?.name}</h2>
+              <h2 className="film-card__title">{name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{promo?.genre}</span>
-                <span className="film-card__year">{promo?.released}</span>
+                <span className="film-card__genre">{genre}</span>
+                <span className="film-card__year">{released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -77,9 +78,9 @@ function MainPage(): JSX.Element {
 
           <GenresList genresList={genres} genreCurrent={genreCurrent} />
 
-          <FilmList catalogFilms={filmsByGenre.slice(0,shownFilmsCount)} />
+          <FilmList catalogFilms={filmsForRender} />
 
-          {filmsByGenre.length>shownFilmsCount ? <ButtonShowMore/> :''}
+          {filmsByGenre.length>renderedFilmsCount ? <ButtonShowMore onAddReview={handleShowMoreButtonClick}/> :''}
         </section>
       </div>
 

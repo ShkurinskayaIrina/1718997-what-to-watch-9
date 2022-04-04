@@ -1,4 +1,5 @@
 import { RatingRangeProps } from './types/films';
+import { UserData } from './types/user-data';
 
 export const FILM_COUNT_PER_STEP = 8;
 
@@ -9,6 +10,8 @@ export const TIMEOUT_LAG_PLAYER = 1000;
 export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const ALL_GENRES = 'All genres';
+
+export const MAX_GENRES_COUNT = 9;
 
 export enum AppRoute {
     MainPage = '/',
@@ -45,6 +48,11 @@ export const filmTabs = [
   'Reviews',
 ];
 
+export const ErrorMessages = {
+  EMAIL: 'Введите корректный email!',
+  PASSWORD: 'Пароль должен состоять минимум из одной буквы и цифры! Пробелы запрещены!',
+};
+
 export const ratingRange: RatingRangeProps = {
   'bad': {
     from: 0,
@@ -68,4 +76,7 @@ export const ratingRange: RatingRangeProps = {
   },
 };
 
-
+export const unknownUserData:UserData = {
+  avatarUrl: 'img/avatar.jpg',
+  name: 'User avatar',
+};

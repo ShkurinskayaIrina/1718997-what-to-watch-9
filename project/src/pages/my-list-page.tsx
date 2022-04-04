@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Logo from '../components/logo/logo';
 import Footer from '../components/footer/footer';
-// import FilmList from '../components/film-list/film-list';
+// import FilmList from '../components/film-list/film-list'; // доделать
 
 function MyListPage(): JSX.Element {
   return (

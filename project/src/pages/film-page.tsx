@@ -1,7 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+
 import {useAppSelector} from '../hooks';
 
 import Logo from '../components/logo/logo';
+import User from '../components/user/user';
 import Footer from '../components/footer/footer';
 import NotFoundPage from '../components/not-found-page/not-found-page';
 import FilmTabs from '../components/film-tabs/film-tabs';
@@ -13,23 +16,21 @@ import { store } from '../store/index';
 import { fetchFilm, fetchComments, fetchSimilarFilms } from '../store/api-actions';
 
 function FilmPage(): JSX.Element {
-  const {id} = useParams();
+  const {id:idFilm} = useParams();
 
-  const catalog = useAppSelector((state) => state.catalog);
+  useEffect(() => {
+    store.dispatch(fetchFilm(Number(idFilm)));
+    store.dispatch(fetchComments(Number(idFilm)));
+    store.dispatch(fetchSimilarFilms(Number(idFilm)));
+  }, [idFilm]);
 
-  const filmFind = catalog.find((film) => film.id.toString() === id);
 
-  store.dispatch(fetchFilm(Number(id)));
+  const { catalog, filmCurrent, comments , similarFilms, userData, authorizationStatus:authorizationStatusUser } = useAppSelector((state) => state);
+  const { id, backgroundImage, name, genre, released, posterImage } = filmCurrent;
 
-  const filmCurrent = useAppSelector((state) => state.filmCurrent);
+  const similarFilmsList = similarFilms.slice(0,SIMILAR_FILM_COUNT);
 
-  store.dispatch(fetchComments(Number(id)));
-  const commentsFilm = useAppSelector((state) => state.comments);
-
-  store.dispatch(fetchSimilarFilms(Number(id)));
-  const similarFilmsList = useAppSelector((state) => state.similarFilms).slice(0,SIMILAR_FILM_COUNT);
-
-  const authorizationStatusUser = useAppSelector((state) => state.authorizationStatus);
+  const filmFind = catalog.find((film) => film.id.toString() === idFilm);
 
   if (filmFind === undefined) {
     return <NotFoundPage />;
@@ -37,7 +38,7 @@ function FilmPage(): JSX.Element {
 
   function ButtonAddReview():JSX.Element {
     return (
-      <Link to={`/films/${filmCurrent?.id}/review`}  className="btn film-card__button">Add review</Link>
+      <Link to={`/films/${id}/review`}  className="btn film-card__button">Add review</Link>
     );
   }
 
@@ -46,32 +47,24 @@ function FilmPage(): JSX.Element {
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={filmCurrent?.backgroundImage} alt={filmCurrent?.name} />
+            <img src={backgroundImage} alt={name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
 
           <header className="page-header film-card__head">
+
             <Logo classLogo="logo__link"/>
 
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <Link to="/login" className="user-block__link">Sign out</Link>
-              </li>
-            </ul>
+            <User userData={userData} authorizationStatus={authorizationStatusUser}/>
           </header>
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{filmCurrent?.name}</h2>
+              <h2 className="film-card__title">{name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{filmCurrent?.genre}</span>
-                <span className="film-card__year">{filmCurrent?.released}</span>
+                <span className="film-card__genre">{genre}</span>
+                <span className="film-card__year">{released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -96,11 +89,11 @@ function FilmPage(): JSX.Element {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={filmCurrent?.posterImage}  alt={`${filmCurrent?.name} poster`} width="218" height="327" />
+              <img src={posterImage}  alt={`${name} poster`} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <FilmTabs film = {filmCurrent} reviews={commentsFilm}  />
+              <FilmTabs film = {filmCurrent} reviews={comments} />
             </div>
           </div>
         </div>

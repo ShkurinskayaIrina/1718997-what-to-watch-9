@@ -1,18 +1,23 @@
 import {useState} from 'react';
 import { Link } from 'react-router-dom';
+
 import { filmTabs } from '../../consts';
+
+import { Film, Comment } from '../../types/films';
+
 import OverviewTab from '../../components/film-tabs/overview-tab';
 import ReviewsTab from '../../components/film-tabs/reviews-tab';
 import DetailsTab from '../../components/film-tabs/details-tab';
 
-import { Film, Comment } from '../../types/films';
-
 type Props = {
-  film: Film;
-  reviews: Comment[];
+  film: Film,
+  reviews: Comment[],
 }
-function FilmTabs({film, reviews}: Props): JSX.Element {
-  const [activeTab, setActiveTab] = useState('Overview');
+function FilmTabs({ film, reviews }: Props): JSX.Element {
+
+  const activeTabCurrent = 'Overview';
+
+  const [activeTab, setActiveTab] = useState(activeTabCurrent);
 
   const handleClick = (tab:string) => {
     setActiveTab(tab);
