@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { memo } from 'react';
 
 type Props = {
   classLogo: string;
@@ -16,4 +17,4 @@ function Logo({classLogo}: Props): JSX.Element {
   );
 }
 
-export default Logo;
+export default memo(Logo);

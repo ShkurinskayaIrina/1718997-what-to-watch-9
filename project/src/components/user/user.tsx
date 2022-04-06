@@ -1,4 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { memo } from 'react';
+
 import { logoutAction } from '../../store/api-actions';
 
 import { AppRoute, AuthorizationStatus } from '../../consts';
@@ -10,8 +12,8 @@ type Props = {
   userData: UserData,
   authorizationStatus: AuthorizationStatus,
 }
-function User( {userData, authorizationStatus }:Props): JSX.Element {
 
+function User({userData, authorizationStatus}: Props): JSX.Element {
   const { avatarUrl, name } = userData;
 
   const dispatch = useAppDispatch();
@@ -44,4 +46,6 @@ function User( {userData, authorizationStatus }:Props): JSX.Element {
 
 }
 
-export default User;
+export default memo(User, (prevProps, nextProps) =>
+  prevProps.userData === nextProps.userData,
+);

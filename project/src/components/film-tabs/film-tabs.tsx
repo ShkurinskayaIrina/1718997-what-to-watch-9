@@ -1,13 +1,17 @@
 import {useState} from 'react';
 import { Link } from 'react-router-dom';
 
-import { filmTabs } from '../../consts';
-
 import { Film, Comment } from '../../types/films';
 
 import OverviewTab from '../../components/film-tabs/overview-tab';
 import ReviewsTab from '../../components/film-tabs/reviews-tab';
 import DetailsTab from '../../components/film-tabs/details-tab';
+
+const filmTabs = [
+  'Overview',
+  'Details',
+  'Reviews',
+];
 
 type Props = {
   film: Film,

@@ -12,7 +12,7 @@ import MyListPage from '../../pages/my-list-page';
 import PlayerPage from '../../pages/player-page';
 import SignInPage from '../../pages/sign-in-page';
 
-import ErrorMessage from '../error-message/error-message';
+// import ErrorMessage from '../error-message/error-message';
 import NotFoundPage from '../not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import Preloader from '../preloader/preloader';
@@ -25,8 +25,9 @@ import { store } from '../../store/index';
 import { fetchCatalog, fetchPromo, checkAuthAction } from '../../store/api-actions';
 
 function App(): JSX.Element {
-  const {authorizationStatus, isDataLoaded} = useAppSelector((state) => state);
-  const error = useAppSelector((state) => state.error);
+  const {authorizationStatus} = useAppSelector(({USER}) => USER);
+  const {isDataLoaded} = useAppSelector(({DATA}) => DATA);
+  // const error = useAppSelector((state) => state.);
 
   useEffect(() => {
     store.dispatch(fetchCatalog());
@@ -40,11 +41,11 @@ function App(): JSX.Element {
     );
   }
 
-  if (error) {
-    return (
-      <ErrorMessage error={error}/>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <ErrorMessage error={error}/>
+  //   );
+  // }
 
   return (
     <HistoryRouter history={browserHistory}>

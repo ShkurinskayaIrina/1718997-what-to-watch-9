@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FilmProps } from '../../types/films';
-import { TIMEOUT_LAG_PLAYER } from '../../consts';
 
 import VideoPlayer from '../../components/video-player/video-player';
+
+const TIMEOUT_LAG_PLAYER = 1000;
 
 function FilmCard( {film}: FilmProps): JSX.Element {
 

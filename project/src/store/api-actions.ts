@@ -5,14 +5,17 @@ import { api, store } from './index';
 import { dropToken, saveToken } from '../services/token';
 import { errorHandle } from '../services/error-handle';
 
-import { loadCatalog, loadFilm, loadComments, loadPromo, loadSimilarFilms } from './action';
-import { requireAuthorization, setError, redirectToRoute, fetchUserData } from './action';
+import { setError, redirectToRoute } from './action';
+import { requireAuthorization, fetchUserData } from './user-process/user-process';
 
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR, AppRoute, unknownUserData } from '../consts';
+import { loadCatalog, loadFilm, loadComments, loadPromo, loadSimilarFilms } from './films-data/films-data';
+import { APIRoute, AuthorizationStatus, AppRoute, unknownUserData } from '../consts';
 
 import { Catalog, Film, Comments, NewComment } from '../types/films';
 import { AuthData } from '../types/auth-data';
 import { MaxUserData } from '../types/user-data';
+
+const TIMEOUT_SHOW_ERROR = 2000;
 
 export const clearErrorAction = createAsyncThunk(
   'films/clearError',

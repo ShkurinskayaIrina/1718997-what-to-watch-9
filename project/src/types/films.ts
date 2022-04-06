@@ -1,27 +1,36 @@
 export type Film = {
-  id: number;
-  name: string;
-  posterImage: string;
-  previewImage: string;
-  backgroundImage: string;
-  backgroundColor: string;
-  videoLink: string;
-  previewVideoLink: string;
-  description: string;
-  rating: number;
-  scoresCount: number;
-  director: string;
-  starring: string[];
-  runTime: number;
-  genre: string
-  released: number;
-  isFavorite: boolean;
+  id: number,
+  name: string,
+  posterImage: string,
+  previewImage: string,
+  backgroundImage: string,
+  backgroundColor: string,
+  videoLink: string,
+  previewVideoLink: string,
+  description: string,
+  rating: number,
+  scoresCount: number,
+  director: string,
+  starring: string[],
+  runTime: number,
+  genre: string,
+  released: number,
+  isFavorite: boolean,
+}
+
+export type PromoFilm = {
+  name: string,
+  posterImage: string,
+  previewImage: string,
+  backgroundImage: string,
+  genre: string,
+  released: number,
 }
 
 export type Catalog = Film[];
 
 export type FilmProps = {
-  film: Film;
+  film: Film,
 }
 
 export type NewComment = {
