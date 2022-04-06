@@ -10,10 +10,12 @@ import NotFoundPage from '../components/not-found-page/not-found-page';
 import FilmTabs from '../components/film-tabs/film-tabs';
 import FilmList from '../components/film-list/film-list';
 
-import { AuthorizationStatus, SIMILAR_FILM_COUNT } from '../consts';
+import { AuthorizationStatus } from '../consts';
 
 import { store } from '../store/index';
 import { fetchFilm, fetchComments, fetchSimilarFilms } from '../store/api-actions';
+
+const SIMILAR_FILM_COUNT = 4;
 
 function FilmPage(): JSX.Element {
   const {id:idFilm} = useParams();
@@ -24,8 +26,8 @@ function FilmPage(): JSX.Element {
     store.dispatch(fetchSimilarFilms(Number(idFilm)));
   }, [idFilm]);
 
-
-  const { catalog, filmCurrent, comments , similarFilms, userData, authorizationStatus:authorizationStatusUser } = useAppSelector((state) => state);
+  const { catalog, filmCurrent, comments , similarFilms } = useAppSelector(({DATA}) => DATA);
+  const { userData,  authorizationStatus:authorizationStatusUser } = useAppSelector(({USER}) => USER);
   const { id, backgroundImage, name, genre, released, posterImage } = filmCurrent;
 
   const similarFilmsList = similarFilms.slice(0,SIMILAR_FILM_COUNT);

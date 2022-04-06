@@ -3,7 +3,12 @@ import { store } from '../store/index';
 import { setError } from '../store/action';
 import { clearErrorAction } from '../store/api-actions';
 import {ErrorType} from '../types/error';
-import {HTTP_CODE} from '../consts';
+
+export enum HTTP_CODE {
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  NOT_FOUND = 404,
+}
 
 export const errorHandle = (error: ErrorType): void => {
   if (!request.isAxiosError(error)) {

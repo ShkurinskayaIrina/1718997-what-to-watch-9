@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
-import { chooseGenre } from '../../store/action';
+import { chooseGenre } from '../../store/films-process/films-process';
 
 type Props = {
   genresList: string[],
@@ -9,10 +9,12 @@ type Props = {
 
 function GenresList({genresList, genreCurrent}: Props): JSX.Element {
   const dispatch = useAppDispatch();
+
   return (
     <ul className="catalog__genres-list">
       {genresList.map((genre, index) => {
         const keyValue = `genre-${index}`;
+
         return (
           <li key={keyValue}
             className = {`catalog__genres-item ${genre === genreCurrent ? 'catalog__genres-item--active' : ''}`}
