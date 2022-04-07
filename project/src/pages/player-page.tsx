@@ -1,19 +1,31 @@
-// import { FilmProps } from '../types/films';
+import { useParams, useNavigate } from 'react-router-dom';
+
+import { useAppSelector } from '../hooks';
+
+import { searchFilm } from '../films';
 
 function PlayerPage(): JSX.Element {
+  const {id} = useParams();
+  const { catalog } = useAppSelector(({DATA}) => DATA);
+
+  const filmFind = searchFilm(catalog, Number(id));
+  const { videoLink, posterImage } = {...filmFind};
+
+  const navigate = useNavigate();
+
   return (
     <div className="player">
-      {/* <video src={film.videoLink} className="player__video" poster={film.posterImage}></video> */}
+      <video src={videoLink} className="player__video" poster={posterImage} controls></video>
 
-      <button type="button" className="player__exit">Exit</button>
+      <button type="button" onClick={() => navigate(`/films/${id}`)} className="player__exit">Exit</button>
 
-      <div className="player__controls">
+      {/* <div className="player__controls">
         <div className="player__controls-row">
           <div className="player__time">
             <progress className="player__progress" value="30" max="100"></progress>
             <div className="player__toggler" style={{left: '30%'}}>Toggler</div>
           </div>
-          <div className="player__time-value">1:30:29</div>
+          <div className="player__time-value">{runTime}</div>
         </div>
 
         <div className="player__controls-row">
@@ -32,7 +44,7 @@ function PlayerPage(): JSX.Element {
             <span>Full screen</span>
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

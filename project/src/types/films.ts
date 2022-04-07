@@ -19,15 +19,23 @@ export type Film = {
 }
 
 export type PromoFilm = {
+  id: number,
   name: string,
   posterImage: string,
   previewImage: string,
   backgroundImage: string,
   genre: string,
   released: number,
+  isFavorite: boolean,
 }
 
 export type Catalog = Film[];
+
+export type FavoriteStatus = {
+  filmId: number,
+  status: number,
+  isPromo: number,
+}
 
 export type FilmProps = {
   film: Film,

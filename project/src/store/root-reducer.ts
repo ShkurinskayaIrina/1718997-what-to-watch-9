@@ -6,6 +6,6 @@ import { userProcess } from './user-process/user-process';
 
 export const rootReducer = combineReducers({
   [NameSpace.data]: filmsData.reducer,
-  [NameSpace.films]:filmsProcess.reducer,
+  [NameSpace.films]: filmsProcess.reducer,
   [NameSpace.user]: userProcess.reducer,
 });

@@ -8,6 +8,7 @@ function MainPage(): JSX.Element {
   const { catalog, promo } = useAppSelector(({DATA}) => DATA);
   const { genreCurrent } = useAppSelector(({FILMS}) => FILMS);
   const { userData, authorizationStatus } = useAppSelector(({USER}) => USER);
+
   return (
     <>
       <PromoFilmCard
