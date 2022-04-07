@@ -1,5 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+
 import User from '../../components/user/user';
+import ButtonFavoriteAdd from '../../components/button-favorite-add/button-favorite-add';
 import Logo from '../logo/logo';
+import Preloader  from '../../components/preloader/preloader';
 
 import { PromoFilm } from '../../types/films';
 import { UserData } from '../../types/user-data';
@@ -13,8 +17,13 @@ type Props = {
 }
 
 function PromoFilmCard({promo, userData, authorizationStatus} :Props): JSX.Element {
+  const { backgroundImage, name, posterImage, genre, released, id, isFavorite } = promo;
 
-  const { backgroundImage, name, posterImage, genre, released } = promo;
+  const navigate = useNavigate();
+
+  if (promo === null) {
+    return <Preloader />;
+  }
 
   return (
     <section className="film-card">
@@ -27,7 +36,7 @@ function PromoFilmCard({promo, userData, authorizationStatus} :Props): JSX.Eleme
       <header className="page-header film-card__head">
         <Logo classLogo="logo__link" />
 
-        <User userData={userData} authorizationStatus={authorizationStatus}/>
+        <User userData={userData} authorizationStatus={authorizationStatus} />
       </header>
 
       <div className="film-card__wrap">
@@ -44,18 +53,15 @@ function PromoFilmCard({promo, userData, authorizationStatus} :Props): JSX.Eleme
             </p>
 
             <div className="film-card__buttons">
-              <button className="btn btn--play film-card__button" type="button">
+              <button onClick={() => navigate(`/player/${id}`)} className="btn btn--play film-card__button" type="button">
                 <svg viewBox="0 0 19 19" width="19" height="19">
                   <use xlinkHref="#play-s"></use>
                 </svg>
                 <span>Play</span>
               </button>
-              <button className="btn btn--list film-card__button" type="button">
-                <svg viewBox="0 0 19 20" width="19" height="20">
-                  <use xlinkHref="#add"></use>
-                </svg>
-                <span>My list</span>
-              </button>
+
+              <ButtonFavoriteAdd id={id} isFavorite={Number(isFavorite)} isPromo={Number(Boolean(1)) } />
+
             </div>
           </div>
         </div>

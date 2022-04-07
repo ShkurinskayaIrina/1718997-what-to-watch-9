@@ -22,7 +22,9 @@ function User({userData, authorizationStatus}: Props): JSX.Element {
     <ul className="user-block">
       <li className="user-block__item">
         <div className="user-block__avatar">
-          <img src={avatarUrl} alt={name} width="63" height="63" />
+          <Link to={AppRoute.MyListPage}>
+            <img src={avatarUrl} alt={name} width="63" height="63" />
+          </Link>
         </div>
       </li>
       <li className="user-block__item">

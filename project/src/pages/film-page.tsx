@@ -1,24 +1,30 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+
 import { useEffect } from 'react';
 
-import {useAppSelector} from '../hooks';
+import { useAppSelector } from '../hooks';
 
 import Logo from '../components/logo/logo';
 import User from '../components/user/user';
 import Footer from '../components/footer/footer';
-import NotFoundPage from '../components/not-found-page/not-found-page';
 import FilmTabs from '../components/film-tabs/film-tabs';
 import FilmList from '../components/film-list/film-list';
-
+import ButtonFavoriteAdd from '../components/button-favorite-add/button-favorite-add';
+import NotFoundPage from '../components/not-found-page/not-found-page';
+import Preloader from '../components/preloader/preloader';
 import { AuthorizationStatus } from '../consts';
 
 import { store } from '../store/index';
 import { fetchFilm, fetchComments, fetchSimilarFilms } from '../store/api-actions';
 
+import { searchFilm } from '../films';
+
 const SIMILAR_FILM_COUNT = 4;
 
 function FilmPage(): JSX.Element {
   const {id:idFilm} = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     store.dispatch(fetchFilm(Number(idFilm)));
@@ -28,11 +34,15 @@ function FilmPage(): JSX.Element {
 
   const { catalog, filmCurrent, comments , similarFilms } = useAppSelector(({DATA}) => DATA);
   const { userData,  authorizationStatus:authorizationStatusUser } = useAppSelector(({USER}) => USER);
-  const { id, backgroundImage, name, genre, released, posterImage } = filmCurrent;
+  const { id, backgroundImage, name, genre, released, posterImage, isFavorite } = filmCurrent;
 
   const similarFilmsList = similarFilms.slice(0,SIMILAR_FILM_COUNT);
 
-  const filmFind = catalog.find((film) => film.id.toString() === idFilm);
+  const filmFind = searchFilm(catalog, Number(id));
+
+  if (filmFind === null) {
+    return <Preloader />;
+  }
 
   if (filmFind === undefined) {
     return <NotFoundPage />;
@@ -70,18 +80,15 @@ function FilmPage(): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <button onClick={() => navigate(`/player/${id}`)}  className="btn btn--play film-card__button" type="button">
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
+
+                <ButtonFavoriteAdd id={id} isFavorite={Number(isFavorite)} isPromo={Number(Boolean(0)) } />
+
                 {authorizationStatusUser===AuthorizationStatus.Auth? <ButtonAddReview /> : ''}
               </div>
             </div>

@@ -10,6 +10,7 @@ export type FilmsData = {
   promo: Film,
   filmCurrent: Film,
   similarFilms: Catalog,
+  favoriteFilms: Catalog,
   comments: Comment[],
   isDataLoaded: boolean,
 };
@@ -21,10 +22,6 @@ export type FilmsProcess = {
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus,
   userData: UserData,
-};
-
-export type ErrorData = {
-  error: string,
 };
 
 export type State = ReturnType<typeof store.getState>;

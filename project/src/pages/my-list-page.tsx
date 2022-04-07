@@ -1,9 +1,23 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+
+import {useAppSelector} from '../hooks';
+
 import Logo from '../components/logo/logo';
 import Footer from '../components/footer/footer';
-// import FilmList from '../components/film-list/film-list'; // доделать
+import FilmList from '../components/film-list/film-list';
+
+import { store } from '../store/index';
+import { fetchFavoriteAction } from '../store/api-actions';
 
 function MyListPage(): JSX.Element {
+
+  useEffect(() => {
+    store.dispatch(fetchFavoriteAction());
+  }, []);
+
+  const { favoriteFilms } = useAppSelector(({DATA}) => DATA);
+
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -26,7 +40,7 @@ function MyListPage(): JSX.Element {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        {/* <FilmList /> */}
+        <FilmList catalogFilms={favoriteFilms} />
       </section>
 
       <Footer />

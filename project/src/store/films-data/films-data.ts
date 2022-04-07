@@ -3,13 +3,13 @@ import { NameSpace } from '../../consts';
 import { Film } from '../../types/films';
 import { FilmsData } from '../../types/state';
 
-
 const initialState: FilmsData = {
   catalog: [],
   promo: {} as Film,
   filmCurrent: {} as Film,
   similarFilms: [],
   comments: [],
+  favoriteFilms: [],
   isDataLoaded: false,
 };
 
@@ -33,7 +33,10 @@ export const filmsData = createSlice({
     loadPromo: (state, action) => {
       state.promo = action.payload;
     },
+    loadFavoriteFilms: (state, action) => {
+      state.favoriteFilms = action.payload;
+    },
   },
 });
 
-export const { loadCatalog, loadFilm, loadComments, loadSimilarFilms, loadPromo } = filmsData.actions;
+export const { loadCatalog, loadFilm, loadComments, loadSimilarFilms, loadPromo, loadFavoriteFilms } = filmsData.actions;

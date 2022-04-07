@@ -5,27 +5,16 @@ import { api, store } from './index';
 import { dropToken, saveToken } from '../services/token';
 import { errorHandle } from '../services/error-handle';
 
-import { setError, redirectToRoute } from './action';
+import { redirectToRoute } from './action';
+
 import { requireAuthorization, fetchUserData } from './user-process/user-process';
 
-import { loadCatalog, loadFilm, loadComments, loadPromo, loadSimilarFilms } from './films-data/films-data';
+import { loadCatalog, loadFilm, loadComments, loadPromo, loadSimilarFilms, loadFavoriteFilms } from './films-data/films-data';
 import { APIRoute, AuthorizationStatus, AppRoute, unknownUserData } from '../consts';
 
-import { Catalog, Film, Comments, NewComment } from '../types/films';
+import { Catalog, Film, Comments, NewComment, FavoriteStatus } from '../types/films';
 import { AuthData } from '../types/auth-data';
 import { MaxUserData } from '../types/user-data';
-
-const TIMEOUT_SHOW_ERROR = 2000;
-
-export const clearErrorAction = createAsyncThunk(
-  'films/clearError',
-  () => {
-    setTimeout(
-      () => store.dispatch(setError('')),
-      TIMEOUT_SHOW_ERROR,
-    );
-  },
-);
 
 export const fetchCatalog = createAsyncThunk(
   'films/fetchCatalog',
@@ -87,6 +76,34 @@ export const fetchPromo = createAsyncThunk(
   },
 );
 
+export const fetchFavoriteAction = createAsyncThunk(
+  'film/fetchFavoriteFilms',
+  async () => {
+    try {
+      const { data } = await api.get<Catalog>(APIRoute.Favorite);
+      store.dispatch(loadFavoriteFilms(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const addFavoriteAction = createAsyncThunk(
+  'film/addFavoriteFilm',
+  async ({filmId, status, isPromo}: FavoriteStatus) => {
+    try {
+      const { data } = await api.post<Film>(`${APIRoute.Favorite}/${filmId}/${status}`);
+      store.dispatch(fetchCatalog());
+      store.dispatch(loadFilm(data));
+      if (isPromo) {
+        store.dispatch(loadPromo(data));
+      }
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
 export const checkAuthAction = createAsyncThunk(
   'user/checkAuth',
   async () => {
@@ -117,7 +134,6 @@ export const loginAction = createAsyncThunk(
   },
 );
 
-
 export const logoutAction = createAsyncThunk(
   'user/logout',
   async () => {
@@ -136,7 +152,7 @@ export const addCommentAction = createAsyncThunk(
   'film/newComment',
   async ({comment, rating, filmId}: NewComment) => {
     try {
-      const { data } = await api.post<Comments>(`comments/${filmId}`, {comment, rating});
+      const { data } = await api.post<Comments>(`${APIRoute.Comments}/${filmId}`, {comment, rating});
       store.dispatch(loadComments(data));
       store.dispatch(redirectToRoute(`/films/${filmId}`));
     } catch (error) {
@@ -144,3 +160,4 @@ export const addCommentAction = createAsyncThunk(
     }
   },
 );
+
