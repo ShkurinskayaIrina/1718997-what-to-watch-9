@@ -43,7 +43,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <ToastContainer />;
+      <ToastContainer />
       <HistoryRouter history={browserHistory}>
         <Routes>
           <Route
