@@ -5,7 +5,7 @@ type Props = {
   catalogFilms: Film[],
 };
 
-function Filmlist({catalogFilms}: Props): JSX.Element {
+function FilmList({catalogFilms}: Props): JSX.Element {
   return (
     <div className="catalog__films-list">
       {catalogFilms.map((film) => (
@@ -15,4 +15,4 @@ function Filmlist({catalogFilms}: Props): JSX.Element {
   );
 }
 
-export default Filmlist;
+export default FilmList;

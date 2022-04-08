@@ -6,12 +6,16 @@ import { NewComment } from '../../types/films';
 
 import {addCommentAction} from '../../store/api-actions';
 
+const MIN_LENGTH_COMMENT = 50;
+const MAX_LENGTH_COMMENT = 400;
+
 type Props = {
   id: number,
 }
 
 function Review({id}: Props): JSX.Element {
   const [comment, setComment] = useState('');
+
   const [rating, setRating] = useState(0);
 
   const dispatch = useAppDispatch();
@@ -60,6 +64,8 @@ function Review({id}: Props): JSX.Element {
         <textarea className="add-review__textarea"
           name="comment" id="review-text"
           placeholder="Review text"
+          minLength={MIN_LENGTH_COMMENT}
+          maxLength={MAX_LENGTH_COMMENT}
           onChange={(event) => setComment(event.target.value)}
           value={comment}
         >
